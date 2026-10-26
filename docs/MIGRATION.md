@@ -38,14 +38,16 @@ PUREVELL 主题此前放在 `~/Developer/E-commerce/purevell`，占位素材放�
 
 ## 源目录处置
 
-**原目录未删除**，以避免误删。确认新仓库正常后，如需清理：
+**已于 2026-10-26 删除原目录。** 删除前做了两项复核：
+
+1. 逐文件 SHA-256 比对：源目录与新仓库（以及从 GitHub 克隆回来的版本）完全一致，共 498 个主题文件 + `AGENTS.md` + 11 张占位图。
+2. 源目录未被 snapmart 仓库跟踪（`git ls-files purevell purevell-mock` 为 0），删除不会在该仓库产生任何变更。
 
 ```bash
 rm -rf ~/Developer/E-commerce/purevell ~/Developer/E-commerce/purevell-mock
-# 同时删除 ~/Developer/E-commerce/.git/info/exclude 中对应的两行：
-#   /purevell/
-#   /purevell-mock/
 ```
+
+`~/Developer/E-commerce/.git/info/exclude` 中的 `/purevell/`、`/purevell-mock/` 两行为本地忽略规则，仍保留（指向已不存在的路径，无副作用）。
 
 ## Git
 
