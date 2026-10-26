@@ -1,0 +1,152 @@
+{% comment %}
+  Section contract.
+
+  Thin service-led strip: a row of short benefit statements separated by
+  hairlines. Used under the product gallery and on the homepage to carry the
+  brand's delivery and care promises.
+
+  @example
+  <!-- Product template: free shipping, lifetime repairs, 30-day returns -->
+{% endcomment %}
+
+<div
+  class="pv-benefits spacing-style"
+  style="
+    {% render 'spacing-style', settings: section.settings %}
+    --pv-benefits-columns: {{ section.blocks.size | at_least: 1 }};
+  "
+>
+  <ul class="pv-benefits__list">
+    {% for block in section.blocks %}
+      <li class="pv-benefits__item" {{ block.shopify_attributes }}>
+        {% if block.settings.label != blank %}
+          <span class="pv-benefits__label">{{ block.settings.label | escape }}</span>
+        {% endif %}
+        {% if block.settings.text != blank %}
+          <span class="pv-benefits__text">{{ block.settings.text | escape }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% stylesheet %}
+  .pv-benefits {
+    border-block: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+  }
+
+  .pv-benefits__list {
+    max-width: var(--page-width, 1400px);
+    margin-inline: auto;
+    padding-inline: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .pv-benefits__list {
+      padding-inline: 40px;
+      grid-template-columns: repeat(var(--pv-benefits-columns, 4), minmax(0, 1fr));
+      gap: 0;
+    }
+
+    .pv-benefits__item + .pv-benefits__item {
+      border-inline-start: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+      padding-inline-start: 24px;
+    }
+  }
+
+  .pv-benefits__item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 750px) {
+    .pv-benefits__item {
+      padding-inline: 12px;
+    }
+  }
+
+  .pv-benefits__label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+  }
+
+  .pv-benefits__text {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-foreground-muted);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Benefits strip",
+  "class": "ui-test-pv-benefits",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Free shipping"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Supporting text",
+          "default": "On orders over US$150"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Padding top",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits strip",
+      "category": "Storytelling",
+      "blocks": {
+        "b1": { "type": "benefit", "settings": { "label": "Free shipping", "text": "On orders over US$150" } },
+        "b2": { "type": "benefit", "settings": { "label": "Lifetime repairs", "text": "Complimentary, always" } },
+        "b3": { "type": "benefit", "settings": { "label": "30-day returns", "text": "No questions asked" } },
+        "b4": { "type": "benefit", "settings": { "label": "Grade A cashmere", "text": "14.5-15.5 microns" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"]
+    }
+  ]
+}
+{% endschema %}

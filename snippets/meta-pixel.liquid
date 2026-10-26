@@ -1,0 +1,93 @@
+{% doc %}
+  Renders the Meta Pixel and sends an initial `PageView` event.
+
+  Reads `settings.meta_pixel_enabled`, `settings.meta_pixel_id`, and
+  `settings.meta_pixel_require_consent`. Outputs nothing when the pixel is
+  disabled or has no ID.
+
+  Two behaviours are deliberate:
+
+  - Design mode is skipped so theme-editor previews do not send events.
+  - When `settings.meta_pixel_require_consent` is on, Meta's script is not
+    loaded until Shopify's customer privacy API reports marketing consent.
+    Loading waits for the `visitorConsentCollected` document event, so a
+    visitor who accepts the cookie banner is tracked from that point on.
+
+  Render it at the start of `<body>` so the `<noscript>` image is valid markup.
+
+  @example
+  {% render 'meta-pixel' %}
+{% enddoc %}
+
+{%- liquid
+  assign pixel_id = settings.meta_pixel_id | strip
+  assign wait_for_consent = settings.meta_pixel_require_consent
+
+  if wait_for_consent == nil
+    assign wait_for_consent = true
+  endif
+-%}
+
+{%- if settings.meta_pixel_enabled and pixel_id != blank and request.design_mode == false -%}
+  <script>
+    (function () {
+      var pixelId = {{ pixel_id | json }};
+      var requiresConsent = {{ wait_for_consent | json }};
+      var started = false;
+
+      function marketingConsentGranted() {
+        if (!requiresConsent) return true;
+
+        var privacy = window.Shopify && window.Shopify.customerPrivacy;
+
+        // Stores without a privacy banner expose no API; treat them as opted in.
+        if (!privacy || typeof privacy.marketingAllowed !== 'function') return true;
+
+        try {
+          return privacy.marketingAllowed();
+        } catch (error) {
+          return true;
+        }
+      }
+
+      function start() {
+        if (started || !marketingConsentGranted()) return;
+        started = true;
+
+        !(function (f, b, e, v, n, t, s) {
+          if (f.fbq) return;
+          n = f.fbq = function () {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n;
+          n.push = n;
+          n.loaded = !0;
+          n.version = '2.0';
+          n.queue = [];
+          t = b.createElement(e);
+          t.async = !0;
+          t.src = v;
+          s = b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t, s);
+        })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+        window.fbq('init', pixelId);
+        window.fbq('track', 'PageView');
+      }
+
+      start();
+
+      document.addEventListener('visitorConsentCollected', start);
+    })();
+  </script>
+
+  <noscript>
+    <img
+      height="1"
+      width="1"
+      style="display: none"
+      alt=""
+      src="https://www.facebook.com/tr?id={{ pixel_id | url_encode }}&ev=PageView&noscript=1"
+    >
+  </noscript>
+{%- endif -%}

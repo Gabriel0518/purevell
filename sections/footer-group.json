@@ -1,0 +1,58 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "pv_footer": {
+      "type": "pv-footer",
+      "settings": {
+        "heading": "Sign up for $10 off your first order",
+        "subtext": "Early access to new arrivals, mill stories, and private sales. One letter a month, never more.",
+        "placeholder": "Email address",
+        "button_label": "Sign up",
+        "background_color": "#EDEBDF",
+        "text_color": "#3B4021",
+        "padding-block-start": 56,
+        "padding-block-end": 16
+      },
+      "blocks": {
+        "col_1": {
+          "type": "column",
+          "settings": {
+            "title": "About us",
+            "menu": "footer-about"
+          }
+        },
+        "col_2": {
+          "type": "column",
+          "settings": {
+            "title": "Join us",
+            "menu": "footer-join"
+          }
+        },
+        "col_3": {
+          "type": "column",
+          "settings": {
+            "title": "Need help?",
+            "menu": "footer-help"
+          }
+        },
+        "col_4": {
+          "type": "column",
+          "settings": {
+            "title": "Connect",
+            "menu": "footer-connect"
+          }
+        }
+      },
+      "block_order": [
+        "col_1",
+        "col_2",
+        "col_3",
+        "col_4"
+      ]
+    }
+  },
+  "order": [
+    "pv_footer"
+  ]
+}

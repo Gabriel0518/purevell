@@ -1,0 +1,278 @@
+{
+  "sections": {
+    "trending": {
+      "type": "tabbed-product-list",
+      "settings": {
+        "kicker": "Trending now",
+        "heading": "The edit",
+        "collection_list": [
+          "new-in",
+          "best-sellers",
+          "sale",
+          "knitwear"
+        ],
+        "layout_type": "carousel",
+        "columns": 4,
+        "max_products": 8,
+        "columns_gap": 12,
+        "rows_gap": 28,
+        "section_width": "page-width",
+        "gap": 16,
+        "padding-block-start": 64,
+        "padding-block-end": 48
+      },
+      "blocks": {
+        "static-product-card": {
+          "type": "_product-card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product-card-gallery": {
+              "type": "_product-card-gallery",
+              "settings": {
+                "image_ratio": "portrait"
+              }
+            },
+            "product_title": {
+              "type": "product-title",
+              "settings": {
+                "type_preset": "paragraph",
+                "font_size": "0.9375rem",
+                "alignment": "left",
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              }
+            },
+            "price": {
+              "type": "price",
+              "settings": {
+                "show_sale_price_first": true,
+                "type_preset": "h6",
+                "font_size": "0.8125rem",
+                "alignment": "left"
+              }
+            }
+          },
+          "block_order": [
+            "product-card-gallery",
+            "product_title",
+            "price"
+          ]
+        }
+      },
+      "block_order": []
+    },
+    "categories": {
+      "type": "pv-image-tiles",
+      "settings": {
+        "kicker": "The collections",
+        "heading": "Shop by category",
+        "columns": "2",
+        "image_ratio": "4 / 5",
+        "gap": 16,
+        "section_width": "page-width",
+        "padding-block-start": 48,
+        "padding-block-end": 32
+      },
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "label": "Knitwear",
+            "cta_label": "Shop now",
+            "link": "shopify://collections/knitwear"
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "label": "Accessories",
+            "cta_label": "Shop now",
+            "link": "shopify://collections/accessories"
+          }
+        }
+      },
+      "block_order": [
+        "tile_1",
+        "tile_2"
+      ]
+    },
+    "editorial": {
+      "type": "pv-image-tiles",
+      "settings": {
+        "kicker": "More to explore",
+        "heading": "The world of PUREVELL",
+        "columns": "3",
+        "image_ratio": "3 / 4",
+        "gap": 16,
+        "section_width": "page-width",
+        "padding-block-start": 32,
+        "padding-block-end": 64
+      },
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "label": "Our story",
+            "cta_label": "Read more",
+            "link": "shopify://pages/our-story"
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "label": "Sustainability",
+            "cta_label": "Read more",
+            "link": "shopify://pages/sustainability"
+          }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": {
+            "label": "Cashmere craft",
+            "cta_label": "Read more",
+            "link": "shopify://pages/cashmere-craft"
+          }
+        }
+      },
+      "block_order": [
+        "tile_1",
+        "tile_2",
+        "tile_3"
+      ]
+    },
+    "newsletter": {
+      "type": "pv-split-promo",
+      "settings": {
+        "media_position": "left",
+        "kicker": "The list",
+        "heading": "<p>Join the PUREVELL list</p>",
+        "body": "<p>Early access to new arrivals, mill stories, and private sales. One letter a month, never more.</p>",
+        "button_label": "Join free now",
+        "background_color": "#EDEBDF",
+        "text_color": "#3B4021"
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "benefits": {
+      "type": "pv-benefits",
+      "settings": {
+        "padding-block-start": 22,
+        "padding-block-end": 22
+      },
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "label": "Free shipping",
+            "text": "On orders over US$150"
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "label": "Lifetime repairs",
+            "text": "Complimentary, always"
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "label": "30-day returns",
+            "text": "No questions asked"
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "label": "Grade A cashmere",
+            "text": "14.5-15.5 microns"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "hero_slider": {
+      "type": "pv-hero-slider",
+      "settings": {
+        "height": 96,
+        "height_mobile": 88,
+        "overlay_opacity": 35,
+        "text_color": "#FCFBF0",
+        "autoplay": true,
+        "autoplay_speed": 7,
+        "accessibility_label": "Featured collections",
+        "section_width": "full-width",
+        "height_mode": "full_screen",
+        "overlap_header": true
+      },
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "kicker": "Winter 2026",
+            "heading": "<p>The cashmere house</p>",
+            "subheading": "<p>Where winter hushes, and warmth answers. Grade A cashmere, knitted in small batches.</p>",
+            "button_1_label": "Discover more",
+            "button_1_link": "shopify://pages/our-story",
+            "button_2_label": "Shop the collection",
+            "button_2_link": "shopify://collections/knitwear"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "kicker": "Grade A fibre",
+            "heading": "<p>14.5 to 15.5 microns</p>",
+            "subheading": "<p>Sourced from herding families in Inner Mongolia, spun two-ply and finished by hand.</p>",
+            "button_1_label": "Shop knitwear",
+            "button_1_link": "shopify://collections/knitwear"
+          }
+        },
+        "slide_3": {
+          "type": "slide",
+          "settings": {
+            "kicker": "Final pieces",
+            "heading": "<p>Up to 40% off</p>",
+            "subheading": "<p>Last of the season, reduced while they last. No restocks.</p>",
+            "button_1_label": "Shop sale",
+            "button_1_link": "shopify://collections/sale",
+            "button_2_label": "Explore deals",
+            "button_2_link": "shopify://collections/best-sellers"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2",
+        "slide_3"
+      ]
+    }
+  },
+  "order": [
+    "hero_slider",
+    "trending",
+    "categories",
+    "editorial",
+    "benefits",
+    "newsletter"
+  ]
+}

@@ -1,0 +1,9 @@
+# 仓库中不属于 Shopify 主题的内容，避免被 `shopify theme push` 上传
+# 语法：.gitignore 风格
+
+README.md
+AGENTS.md
+.gitignore
+.shopifyignore
+design/
+docs/

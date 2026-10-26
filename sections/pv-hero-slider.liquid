@@ -1,0 +1,551 @@
+{% comment %}
+  Section contract.
+
+  Full-bleed editorial hero carousel. Each block is one screen with its own
+  image, copy and calls to action, so campaigns can present distinct messages
+  per slide rather than one static banner.
+
+  Slides are absolutely stacked and cross-fade. Autoplay pauses on hover, on
+  focus, and when the visitor prefers reduced motion.
+
+  @example
+  <!-- Homepage first section: three campaign screens -->
+{% endcomment %}
+
+{% render 'measure-header-heights', only_when_first_section: true %}
+
+<script
+  src="{{ 'pv-hero-slider.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+{% liquid
+  assign slide_count = section.blocks.size
+%}
+
+<pv-hero-slider
+  class="pv-hero-slider{% if section.settings.section_width == 'full-width' %} pv-hero-slider--full{% endif %}"
+  style="
+    {% if section.settings.height_mode == 'full_screen' and section.settings.overlap_header %}
+      --pv-hero-height: 100svh;
+      --pv-hero-height-mobile: 100svh;
+    {% elsif section.settings.height_mode == 'full_screen' %}
+      --pv-hero-height: calc(100svh - var(--header-group-height, var(--header-height, 0px)));
+      --pv-hero-height-mobile: calc(100svh - var(--header-group-height, var(--header-height, 0px)));
+    {% else %}
+      --pv-hero-height: {{ section.settings.height }}svh;
+      --pv-hero-height-mobile: {{ section.settings.height_mobile }}svh;
+    {% endif %}
+    --pv-hero-overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --pv-hero-text: {{ section.settings.text_color }};
+  "
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+  data-slide-count="{{ slide_count }}"
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="{{ section.settings.accessibility_label | default: 'Featured collections' | escape }}"
+>
+  <div class="pv-hero-slider__slides">
+    {% for block in section.blocks %}
+      {% liquid
+        assign fallback = 'pv-hero.jpg'
+        case forloop.index0
+          when 1
+            assign fallback = 'pv-edit-1.jpg'
+          when 2
+            assign fallback = 'pv-edit-2.jpg'
+          when 3
+            assign fallback = 'pv-edit-3.jpg'
+        endcase
+      %}
+
+      <div
+        class="pv-hero-slider__slide{% if forloop.first %} is-active{% endif %}"
+        ref="slides[]"
+        data-index="{{ forloop.index0 }}"
+        role="group"
+        aria-roledescription="slide"
+        aria-label="{{ forloop.index }} of {{ slide_count }}"
+        {% unless forloop.first %}aria-hidden="true" inert{% endunless %}
+        {{ block.shopify_attributes }}
+      >
+        <div class="pv-hero-slider__media">
+          {% if block.settings.image != blank %}
+            {{
+              block.settings.image
+              | image_url: width: 2400
+              | image_tag:
+                loading: 'lazy',
+                widths: '600,900,1200,1600,2000,2400',
+                sizes: '100vw',
+                alt: block.settings.image.alt,
+                class: 'pv-hero-slider__img'
+            }}
+          {% else %}
+            <img
+              class="pv-hero-slider__img"
+              src="{{ fallback | asset_url }}"
+              alt="{{ block.settings.heading | strip_html | escape }}"
+              width="1920"
+              height="1080"
+              loading="lazy"
+            >
+          {% endif %}
+          <span class="pv-hero-slider__scrim"></span>
+        </div>
+
+        <div class="pv-hero-slider__content">
+          {% if block.settings.kicker != blank %}
+            <p class="pv-hero-slider__kicker">{{ block.settings.kicker | escape }}</p>
+          {% endif %}
+
+          {% if block.settings.heading != blank %}
+            <h2 class="pv-hero-slider__heading">{{ block.settings.heading }}</h2>
+          {% endif %}
+
+          {% if block.settings.subheading != blank %}
+            <div class="pv-hero-slider__subheading">{{ block.settings.subheading }}</div>
+          {% endif %}
+
+          {% if block.settings.button_1_label != blank or block.settings.button_2_label != blank %}
+            <div class="pv-hero-slider__actions">
+              {% if block.settings.button_1_label != blank %}
+                <a class="pv-hero-slider__button" href="{{ block.settings.button_1_link | default: '#' }}">
+                  {{ block.settings.button_1_label | escape }}
+                </a>
+              {% endif %}
+              {% if block.settings.button_2_label != blank %}
+                <a class="pv-hero-slider__button" href="{{ block.settings.button_2_link | default: '#' }}">
+                  {{ block.settings.button_2_label | escape }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if slide_count > 1 %}
+    <div class="pv-hero-slider__nav">
+      <button
+        class="pv-hero-slider__arrow"
+        ref="prev"
+        type="button"
+        aria-label="Previous slide"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20">
+          <path d="M15 4 7 12l8 8" fill="none" stroke="currentColor" stroke-width="1.25" />
+        </svg>
+      </button>
+
+      <div class="pv-hero-slider__dots" role="tablist" aria-label="Slides">
+        {% for block in section.blocks %}
+          <button
+            class="pv-hero-slider__dot{% if forloop.first %} is-active{% endif %}"
+            ref="dots[]"
+            type="button"
+            role="tab"
+            data-index="{{ forloop.index0 }}"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-label="Slide {{ forloop.index }}"
+          ></button>
+        {% endfor %}
+      </div>
+
+      <button
+        class="pv-hero-slider__arrow"
+        ref="next"
+        type="button"
+        aria-label="Next slide"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20">
+          <path d="m9 4 8 8-8 8" fill="none" stroke="currentColor" stroke-width="1.25" />
+        </svg>
+      </button>
+    </div>
+  {% endif %}
+</pv-hero-slider>
+
+{% stylesheet %}
+  .pv-hero-slider {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .pv-hero-slider__slides {
+    display: grid;
+    grid-template-areas: 'slide';
+    min-height: var(--pv-hero-height-mobile, 88svh);
+  }
+
+  @media screen and (min-width: 750px) {
+    .pv-hero-slider__slides {
+      min-height: var(--pv-hero-height, 96svh);
+    }
+  }
+
+  /* Every slide shares one grid cell, so they all fill the band and cross-fade
+     in place without needing a height-establishing first child. */
+  .pv-hero-slider__slide {
+    grid-area: slide;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+
+  .pv-hero-slider__slide.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .pv-hero-slider__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .pv-hero-slider__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .pv-hero-slider__scrim {
+    position: absolute;
+    inset: 0;
+    /* Bottom scrim carries the copy; the top band keeps the transparent
+       header legible over bright imagery. */
+    background:
+      linear-gradient(to bottom, rgb(0 0 0 / 0.38) 0%, rgb(0 0 0 / 0) 18%),
+      linear-gradient(
+        to top,
+        rgb(0 0 0 / calc(var(--pv-hero-overlay, 0.3) + 0.15)) 0%,
+        rgb(0 0 0 / var(--pv-hero-overlay, 0.3)) 45%,
+        rgb(0 0 0 / calc(var(--pv-hero-overlay, 0.3) * 0.4)) 100%
+      );
+  }
+
+  .pv-hero-slider__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    padding: 64px 20px;
+    max-width: 820px;
+    color: var(--pv-hero-text, #fcfbf0);
+  }
+
+  .pv-hero-slider__kicker {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .pv-hero-slider__heading {
+    margin: 0;
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    line-height: 1.04;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .pv-hero-slider__heading p,
+  .pv-hero-slider__subheading p {
+    margin: 0;
+  }
+
+  .pv-hero-slider__subheading {
+    max-width: 46ch;
+    font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
+    line-height: 1.6;
+    opacity: 0.92;
+  }
+
+  .pv-hero-slider__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-block-start: 10px;
+  }
+
+  .pv-hero-slider__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    height: 56px;
+    padding: 0 32px;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background-color: transparent;
+    color: var(--pv-hero-text, #fcfbf0);
+    border: 1px solid var(--pv-hero-text, #fcfbf0);
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  .pv-hero-slider__button:hover {
+    background-color: var(--pv-hero-text, #fcfbf0);
+    color: #3b4021;
+  }
+
+  .pv-hero-slider__nav {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 24px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    color: var(--pv-hero-text, #fcfbf0);
+  }
+
+  .pv-hero-slider__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: none;
+    border: 1px solid currentcolor;
+    border-radius: 50%;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+  }
+
+  .pv-hero-slider__arrow:hover {
+    opacity: 1;
+    background-color: rgb(255 255 255 / 0.12);
+  }
+
+  .pv-hero-slider__dots {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pv-hero-slider__dot {
+    width: 32px;
+    height: 2px;
+    padding: 0;
+    border: 0;
+    background-color: currentcolor;
+    opacity: 0.35;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .pv-hero-slider__dot.is-active {
+    opacity: 1;
+  }
+
+  .pv-hero-slider__dot:focus-visible,
+  .pv-hero-slider__arrow:focus-visible,
+  .pv-hero-slider__button:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pv-hero-slider__slide,
+    .pv-hero-slider__button,
+    .pv-hero-slider__dot,
+    .pv-hero-slider__arrow {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Editorial hero",
+  "class": "ui-test-pv-hero-slider",
+  "max_blocks": 5,
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background image"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker"
+        },
+        {
+          "type": "richtext",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "label": "Supporting text"
+        },
+        {
+          "type": "text",
+          "id": "button_1_label",
+          "label": "Primary button label"
+        },
+        {
+          "type": "url",
+          "id": "button_1_link",
+          "label": "Primary button link"
+        },
+        {
+          "type": "text",
+          "id": "button_2_label",
+          "label": "Secondary button label"
+        },
+        {
+          "type": "url",
+          "id": "button_2_link",
+          "label": "Secondary button link"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Height mode",
+      "info": "Full screen fills the viewport exactly, below the header.",
+      "options": [
+        { "value": "full_screen", "label": "Full screen" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "full_screen"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlap_header",
+      "label": "Sit under the transparent header",
+      "info": "On when the header uses a transparent background on the home page. The hero then fills the whole viewport and the header floats above it.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Height (desktop)",
+      "min": 40,
+      "max": 100,
+      "step": 2,
+      "unit": "svh",
+      "default": 96,
+      "visible_if": "{{ section.settings.height_mode == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Height (mobile)",
+      "min": 40,
+      "max": 100,
+      "step": 2,
+      "unit": "svh",
+      "default": 88,
+      "visible_if": "{{ section.settings.height_mode == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Image overlay",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FCFBF0"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Auto-rotate speed",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 7
+    },
+    {
+      "type": "text",
+      "id": "accessibility_label",
+      "label": "Carousel label",
+      "default": "Featured collections"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        { "value": "page-width", "label": "Page width" },
+        { "value": "full-width", "label": "Full width" }
+      ],
+      "default": "full-width"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial hero",
+      "category": "Banners",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "kicker": "Winter 2026",
+            "heading": "<p>The cashmere house</p>",
+            "subheading": "<p>Where winter hushes, and warmth answers.</p>",
+            "button_1_label": "Shop sale",
+            "button_2_label": "Explore deals"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "kicker": "Grade A fibre",
+            "heading": "<p>Knitted in small batches</p>",
+            "subheading": "<p>14.5 to 15.5 microns, spun two-ply and finished by hand.</p>",
+            "button_1_label": "Shop the collection"
+          }
+        }
+      },
+      "block_order": ["slide_1", "slide_2"]
+    }
+  ]
+}
+{% endschema %}
