@@ -60,12 +60,12 @@ shopify theme dev --store your-store.myshopify.com
 
 `templates/index.json` 的区块顺序（自上而下）：
 
-1. `pv-hero-slider` — 全幅编辑化 Hero 轮播
-2. `pv-image-tiles` — 双列分类图块（Knitwear / Accessories / Home）
+1. `pv-hero-slider` — 全幅编辑化 Hero 轮播（3 屏：The cashmere house / 14.5 to 15.5 microns / Up to 40% off）
+2. `pv-image-tiles` — 双列分类图块（Knitwear / Accessories）
 3. `tabbed-product-list` — "Trending now / The edit" 标签切换商品列表
-4. `pv-image-tiles` — 三列编辑精选
+4. `pv-image-tiles` — 三列编辑精选（Our story / Sustainability / Cashmere craft）
 5. `pv-split-promo` — 订阅邀请（"Join the PUREVELL list"）
-6. `pv-benefits` — 服务卖点条
+6. `pv-benefits` — 服务卖点条（免运费 / 终身维修 / 30 天退换 / A 级羊绒）
 
 商品页 `templates/product.json`：`product-information` → `pv-benefits` → `product-recommendations`。
 
@@ -76,7 +76,7 @@ shopify theme dev --store your-store.myshopify.com
 | Hero 轮播 | `sections/pv-hero-slider.liquid`、`assets/pv-hero-slider.js` | 全幅跨屏淡入淡出；悬停、聚焦、`prefers-reduced-motion` 时暂停自动播放 |
 | 分类 / 编辑图块 | `sections/pv-image-tiles.liquid` | 双列分类 + 三列编辑流；未选图时回退到随包占位图 |
 | 分栏促销 | `sections/pv-split-promo.liquid` | 左图右文（可反向），用于订阅邀请与活动位 |
-| 服务卖点条 | `sections/pv-benefits.liquid` | 免运费 / 终身维修 / 30 天退换，细线分隔 |
+| 服务卖点条 | `sections/pv-benefits.liquid` | 免运费 / 终身维修 / 30 天退换 / A 级羊绒（14.5–15.5 微米），细线分隔 |
 | 编辑化页脚 | `sections/pv-footer.liquid` | 顶部订阅 + 最多 5 列链接（读取 link list）+ 法务条 |
 | 品牌字标 | `snippets/pv-logo.liquid` | 内联 SVG 文字标志，继承 `currentColor`，头部滑块/透明态自适应 |
 | 页头 | `sections/header-group.json`、`blocks/_header-logo.liquid` | 公告条 + 居中 logo + 左侧菜单 + 首页透明头部 |

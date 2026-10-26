@@ -27,13 +27,13 @@
 
 | 主题内文件 | 尺寸 | 使用位置 |
 | --- | --- | --- |
-| `pv-hero.jpg` | 1920×1080 | `sections/pv-hero-slider.liquid` |
-| `pv-tile-knitwear.jpg` | 600×800 | `sections/pv-image-tiles.liquid` 首块 |
-| `pv-tile-accessories.jpg` | 600×800 | `pv-image-tiles` 第二块 |
-| `pv-tile-home.jpg` | 800×1067 | `pv-image-tiles` 第三块 |
-| `pv-edit-1.jpg`、`pv-edit-2.jpg` | 1200×400 | 编辑流横幅位 |
-| `pv-edit-3.jpg` | 600×800 | 编辑流竖版位 |
-| `pv-promo.jpg` | 600×800 | `sections/pv-split-promo.liquid` |
+| `pv-hero.jpg` | 1920×1080 | `pv-hero-slider` 第 1 屏回退图 |
+| `pv-edit-1.jpg`、`pv-edit-2.jpg` | 1200×400 | `pv-hero-slider` 第 2、3 屏回退图 |
+| `pv-edit-3.jpg` | 600×800 | `pv-hero-slider` 第 4 屏、`pv-image-tiles` 第四个图块回退图 |
+| `pv-tile-knitwear.jpg` | 600×800 | `pv-image-tiles` 首个图块回退图 |
+| `pv-tile-accessories.jpg` | 600×800 | `pv-image-tiles` 第二个图块回退图 |
+| `pv-tile-home.jpg` | 800×1067 | `pv-image-tiles` 第三个图块回退图（首页当前只配了 2 块） |
+| `pv-promo.jpg` | 600×800 | `pv-split-promo` 未选图时的回退图 |
 
 这组 jpg 与 PNG 母版并非逐张等比缩放（裁剪比例不同），所以替换素材时按上表的实际用途分别出图。
 
